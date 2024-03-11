@@ -1,4 +1,4 @@
-import { Md5ShorteningStrategy } from "./md5-encode.strategy";
+import { Md5ShorteningStrategy } from './md5-encode.strategy';
 
 describe('Md5ShorteningStrategy', () => {
   it('should not return the same URL for a valid input', () => {
@@ -28,11 +28,11 @@ describe('Md5ShorteningStrategy', () => {
     const shortener = new Md5ShorteningStrategy();
     const url = 'https://www.google.com';
     const shortenedUrls = new Set();
-    const testSize = 10
+    const testSize = 10;
     for (let i = 0; i < testSize; i++) {
       const encodedText = shortener.encode(url);
       shortenedUrls.add(encodedText);
     }
-    expect(shortenedUrls.size).toBeGreaterThan(testSize-1);
+    expect(shortenedUrls.size).toBeGreaterThan(testSize - 1);
   });
 });
