@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import { IShorteningStrategy } from './encode.strategy';
+import { IShorteningStrategy } from '../encode.strategy';
 
 export class Md5ShorteningStrategy implements IShorteningStrategy {
   private charsToUse =
@@ -7,7 +7,8 @@ export class Md5ShorteningStrategy implements IShorteningStrategy {
 
   public encode(url: string) {
     const currentEpoc = new Date().valueOf();
-    const epocUrl = currentEpoc + url;
+    const salt = Math.floor(Math.random()*1000)
+    const epocUrl = currentEpoc + url + salt;
     const hexDigest = crypto.createHash('md5').update(epocUrl).digest('hex');
     const resUrl: string[] = [];
     for (let i = 0; i < 4; i++) {

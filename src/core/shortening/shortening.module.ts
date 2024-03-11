@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ShorteningController } from './shortening.controller';
 import { ShorteningService } from './shortening.service';
-import { Md5ShorteningStrategy } from './strategies/md5-encode.strategy';
+import { Md5ShorteningStrategy } from './strategies/md5-encode/md5-encode.strategy';
 
 @Module({
   controllers: [ShorteningController],
