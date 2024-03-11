@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsUrl } from 'class-validator';
 
 export class ShortenRequestDto {
   @ApiProperty()
-  @IsString()
+  @IsUrl()
   longUrl: string;
 }
