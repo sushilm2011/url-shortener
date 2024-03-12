@@ -5,6 +5,11 @@ import * as compression from 'compression';
 import { ConfigService } from '@nestjs/config';
 import { configSwagger } from './config/swagger.config';
 import { Logger, RequestMethod, ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './common/filters';
+import {
+  RequestLoggerInterceptor,
+  ResponseTransformInterceptor,
+} from './common/interceptors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,10 +29,11 @@ async function bootstrap() {
   const prefix = configService.get<string>('API_PREFIX');
   const service = configService.get<string>('SERVICE_NAME');
 
-  app.setGlobalPrefix(prefix, {
-    exclude: [{ path: '/health', method: RequestMethod.GET }],
-  });
-
+  app.useGlobalFilters(new HttpExceptionFilter({}));
+  app.useGlobalInterceptors(
+    new RequestLoggerInterceptor(),
+    new ResponseTransformInterceptor({}),
+  );
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -36,6 +42,10 @@ async function bootstrap() {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
+
+  app.setGlobalPrefix(prefix, {
+    exclude: [{ path: '/health', method: RequestMethod.GET }],
+  });
 
   configSwagger(app, configService);
   await app.listen(port);
