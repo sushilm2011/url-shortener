@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ShortenRequestDto } from './dtos/shorten-request.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ShorteningService } from './shortening.service';
+import { ShorteningService } from './services/shortening.service';
 
 @ApiTags('Shortener')
 @Controller('shorten')

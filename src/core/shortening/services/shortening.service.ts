@@ -4,10 +4,10 @@ import {
   NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
-import { ShortenRequestDto } from './dtos/shorten-request.dto';
-import { IShorteningStrategy } from './strategies/encode.strategy';
-import { UrlRepository } from './repository/url.repository';
-import { UrlMapper } from './mappers/url.mapper';
+import { ShortenRequestDto } from '../dtos/shorten-request.dto';
+import { IShorteningStrategy } from '../strategies/encode.strategy';
+import { UrlRepository } from '../repository/url.repository';
+import { UrlMapper } from '../mappers/url.mapper';
 
 @Injectable()
 export class ShorteningService {

@@ -1,4 +1,4 @@
-import { ShorteningService } from '@core/shortening/shortening.service';
+import { ShorteningService } from '@core/shortening/services/shortening.service';
 import { Controller, Get, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
 
