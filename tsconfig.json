@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@common/*": ["src/common/*"],
-      "@config": ["src/config"],
+      "@config/*": ["src/config/*"],
       "@database/*": ["src/database/*"],
       "@core/*": ["src/core/*"],
     }

@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 ConfigModule.forRoot();
 
 // Required for typeorm cli - hence using process env
-export const options: DataSourceOptions = {
+export const ormConfig: DataSourceOptions = {
   type: 'postgres',
   host: process.env.TYPEORM_HOST,
   port: +process.env.TYPEORM_PORT,
@@ -19,4 +19,4 @@ export const options: DataSourceOptions = {
   migrations: ['dist/database/migrations/**/*.js'],
 };
 
-export const AppDataSource = new DataSource(options);
+export const AppDataSource = new DataSource(ormConfig);
