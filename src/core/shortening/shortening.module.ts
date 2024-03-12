@@ -5,6 +5,7 @@ import { Md5ShorteningStrategy } from './strategies/md5-encode/md5-encode.strate
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from '@database/entities/url.entity';
 import { UrlRepository } from './repository/url.repository';
+import { UrlMapper } from './mappers/url.mapper';
 
 @Module({
   imports: [
@@ -17,7 +18,13 @@ import { UrlRepository } from './repository/url.repository';
       provide: 'SHORTENING_STRATEGY',
       useClass: Md5ShorteningStrategy,
     },
-    UrlRepository
+    {
+      provide: 'SHORTENING_ATTEMPTS',
+      useValue: 10,
+    },
+    UrlRepository,
+    UrlMapper
   ],
+  exports: [ShorteningService]
 })
 export class ShorteningModule {}
