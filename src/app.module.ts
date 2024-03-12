@@ -6,6 +6,7 @@ import { ShorteningModule } from './core/shortening/shortening.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { defaultConnection } from './config/typeorm.config';
 import { DataSource } from 'typeorm';
+import { RedirectionModule } from './core/redirection/redirection.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { DataSource } from 'typeorm';
       inject: [ConfigService],
     }),
     ShorteningModule,
+    RedirectionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
