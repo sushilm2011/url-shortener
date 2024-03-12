@@ -1,9 +1,8 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { UrlRepository } from "./url.repository";
-import { TypeOrmModule, getRepositoryToken } from "@nestjs/typeorm";
-import { UrlEntity } from "@database/entities/url.entity";
-import { ormConfig } from "@config/orm.config";
-import { DeepPartial } from "typeorm";
+import { Test, TestingModule } from '@nestjs/testing';
+import { UrlRepository } from './url.repository';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { UrlEntity } from '@database/entities/url.entity';
+import { ormConfig } from '@config/orm.config';
 
 describe('UrlRepository', () => {
   let urlRepo: UrlRepository;
@@ -17,9 +16,9 @@ describe('UrlRepository', () => {
           database: process.env.TYPEORM_TEST_DATABASE as any,
           synchronize: true,
           logging: false,
-          entities: [UrlEntity]
+          entities: [UrlEntity],
         }),
-        TypeOrmModule.forFeature([UrlEntity])
+        TypeOrmModule.forFeature([UrlEntity]),
       ],
       providers: [UrlRepository],
     }).compile();
@@ -30,7 +29,7 @@ describe('UrlRepository', () => {
     // Clean up the database after each test
     await module.get(getRepositoryToken(UrlEntity)).clear();
   });
-  
+
   afterAll(async () => {
     // Close the database connection after all tests
     await module.close();
@@ -95,7 +94,7 @@ describe('UrlRepository', () => {
     urlEntity.longUrl = 'https://www.google.com';
     urlEntity.alias = 'google';
     const savedUrl1 = await urlRepo.saveUrl(urlEntity);
-    
+
     const urlEntityToUpdate = new UrlEntity();
     urlEntityToUpdate.id = savedUrl1.id;
     urlEntityToUpdate.longUrl = 'https://www.google.com';
@@ -113,10 +112,11 @@ describe('UrlRepository', () => {
     urlEntity.longUrl = 'https://www.google.com';
     urlEntity.alias = 'google';
     urlEntity.customAlias = 'custom';
-    const savedUrl = await urlRepo.saveUrl(urlEntity);
+    await urlRepo.saveUrl(urlEntity);
+
     const foundUrl = await urlRepo.getByAlias(urlEntity.customAlias, true);
 
-    expect(foundUrl).toBeDefined()
+    expect(foundUrl).toBeDefined();
     expect(foundUrl.customAlias).not.toBeNull();
     expect(foundUrl.customAlias).toBe(urlEntity.customAlias);
   });

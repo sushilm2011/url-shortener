@@ -44,9 +44,7 @@ async function bootstrap() {
   );
 
   app.setGlobalPrefix(prefix, {
-    exclude: [
-      { path: '/:alias', method: RequestMethod.GET }
-    ],
+    exclude: [{ path: '/:alias', method: RequestMethod.GET }],
   });
 
   configSwagger(app, configService);

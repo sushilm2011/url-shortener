@@ -1,4 +1,9 @@
-import { Inject, Injectable, InternalServerErrorException, NotFoundException, RequestTimeoutException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { ShortenRequestDto } from './dtos/shorten-request.dto';
 import { IShorteningStrategy } from './strategies/encode.strategy';
 import { UrlRepository } from './repository/url.repository';
@@ -12,13 +17,16 @@ export class ShorteningService {
     @Inject('SHORTENING_ATTEMPTS')
     private shorteningAttempts: number,
     private urlRepository: UrlRepository,
-    private urlMapper: UrlMapper
+    private urlMapper: UrlMapper,
   ) {}
 
   public async shortenUrl(shortenReqDto: ShortenRequestDto) {
     const alias = await this.generateAlias(shortenReqDto.longUrl);
     if (alias) {
-      const urlEntityToSave = this.urlMapper.toEntity(shortenReqDto.longUrl, alias);
+      const urlEntityToSave = this.urlMapper.toEntity(
+        shortenReqDto.longUrl,
+        alias,
+      );
       const savedUrlEntity = await this.urlRepository.saveUrl(urlEntityToSave);
       return this.urlMapper.toDto(savedUrlEntity);
     }
@@ -38,7 +46,7 @@ export class ShorteningService {
         alias = shortAlias;
       }
       attempts--;
-    } while(!alias && attempts > 0);
+    } while (!alias && attempts > 0);
 
     return alias;
   }

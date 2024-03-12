@@ -8,9 +8,7 @@ import { UrlRepository } from './repository/url.repository';
 import { UrlMapper } from './mappers/url.mapper';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([UrlEntity])
-  ],
+  imports: [TypeOrmModule.forFeature([UrlEntity])],
   controllers: [ShorteningController],
   providers: [
     ShorteningService,
@@ -23,8 +21,8 @@ import { UrlMapper } from './mappers/url.mapper';
       useValue: 10,
     },
     UrlRepository,
-    UrlMapper
+    UrlMapper,
   ],
-  exports: [ShorteningService]
+  exports: [ShorteningService],
 })
 export class ShorteningModule {}
