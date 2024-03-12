@@ -11,6 +11,6 @@ export class ShorteningService {
 
   public async shortenUrl(shortenReqDto: ShortenRequestDto) {
     const shortUrl = this.shorteningStrategy.encode(shortenReqDto.longUrl);
-    return shortUrl;
+    return { shortUrl };
   }
 }

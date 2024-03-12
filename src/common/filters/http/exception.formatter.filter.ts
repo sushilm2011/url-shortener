@@ -36,7 +36,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
       status: status,
     };
 
-    if (!this.config.exclude || !request.originalUrl.match(this.config.exclude)) {
+    if (
+      !this.config.exclude ||
+      !request.originalUrl.match(this.config.exclude)
+    ) {
       const data = {
         success: false,
         message: excetionResponse['message'],

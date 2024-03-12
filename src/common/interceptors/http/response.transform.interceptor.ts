@@ -31,7 +31,10 @@ export class ResponseTransformInterceptor<T>
       const request = ctx.getRequest();
       const response = ctx.getResponse();
 
-      if (this.config.exclude && request.originalUrl.match(this.config.exclude)) {
+      if (
+        this.config.exclude &&
+        request.originalUrl.match(this.config.exclude)
+      ) {
         return next.handle().pipe(map((data) => data));
       }
 

@@ -19,7 +19,7 @@ import { DataSource } from 'typeorm';
       },
       inject: [ConfigService],
     }),
-    ShorteningModule
+    ShorteningModule,
   ],
   controllers: [AppController],
   providers: [AppService],
