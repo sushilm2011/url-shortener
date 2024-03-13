@@ -10,6 +10,8 @@ import { RedirectionModule } from './modules/redirection/redirection.module';
 import { QueueModule } from './modules/queue/queue.module';
 import { StatisticsModule } from '@modules/statistics/statistics.module';
 import { CounterCacheModule } from '@modules/counter-cache/counter-cache.module';
+import { TerminusModule } from '@nestjs/terminus';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { CounterCacheModule } from '@modules/counter-cache/counter-cache.module'
       },
       inject: [ConfigService],
     }),
+    TerminusModule,
+    HttpModule,
     ShorteningModule,
     RedirectionModule,
     QueueModule,

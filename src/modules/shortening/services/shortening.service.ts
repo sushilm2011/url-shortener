@@ -94,7 +94,10 @@ export class ShorteningService {
     if (cachedUrl) {
       return cachedUrl;
     }
-    const urlEntity = await this.urlRepository.getByAlias(shortAlias, includeInactive);
+    const urlEntity = await this.urlRepository.getByAlias(
+      shortAlias,
+      includeInactive,
+    );
     if (!urlEntity) {
       throw new NotFoundException();
     }

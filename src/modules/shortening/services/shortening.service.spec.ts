@@ -35,8 +35,8 @@ describe('ShorteningService', () => {
           return {
             get: jest.fn(),
             set: jest.fn(),
-            del: jest.fn()
-          }
+            del: jest.fn(),
+          };
         }
       })
       .compile();

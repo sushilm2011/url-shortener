@@ -32,7 +32,7 @@ describe('RedirectionService', () => {
           return {
             get: jest.fn(),
             incr: jest.fn(),
-            set: jest.fn()
+            set: jest.fn(),
           };
         }
       })
