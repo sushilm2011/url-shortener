@@ -29,7 +29,7 @@ export class ShorteningController {
     return this.shorteningService.renameUrl(renameReqDto);
   }
 
-  @Delete(':/alias')
+  @Delete('/:alias')
   @ApiParam({ name: 'alias', example: 'z5FgTb' })
   public async deleteAlias(@Param('alias') alias: string) {
     return this.shorteningService.delete(alias);

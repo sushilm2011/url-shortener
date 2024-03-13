@@ -24,6 +24,11 @@ export class RedirectionService {
       throw HttpException.createBody('', 'This URL has reached its access limit.', HttpStatus.TOO_MANY_REQUESTS);
     }
 
+    if (urlEntity.deleted) {
+      // Use Gone status so that for SEO the crawlers know that it needs to be de-indexed
+      throw HttpException.createBody('', 'This link is no longer available.', HttpStatus.GONE);
+    }
+
     this.publishAccessEvent(urlEntity.longUrl, shortAlias, req.headers);
     return urlEntity.longUrl;
   }
