@@ -5,7 +5,10 @@ import {
   NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
-import { RenameRequestDto, ShortenRequestDto } from '../dtos/shorten-request.dto';
+import {
+  RenameRequestDto,
+  ShortenRequestDto,
+} from '../dtos/shorten-request.dto';
 import { IShorteningStrategy } from '../strategies/encode.strategy';
 import { UrlRepository } from '../repository/url.repository';
 import { UrlMapper } from '../mappers/url.mapper';
@@ -43,7 +46,9 @@ export class ShorteningService {
       throw new NotFoundException();
     }
 
-    const existingCustomAlias = await this.urlRepository.getByAlias(renameReqDto.customAlias);
+    const existingCustomAlias = await this.urlRepository.getByAlias(
+      renameReqDto.customAlias,
+    );
     if (existingCustomAlias) {
       throw new ConflictException();
     }

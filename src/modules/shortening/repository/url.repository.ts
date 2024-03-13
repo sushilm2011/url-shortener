@@ -62,7 +62,7 @@ export class UrlRepository {
   public async getUrls(queryDto: PaginationQueryDto) {
     return this.getRepo().findAndCount({
       where: {
-        isInactive: false
+        isInactive: false,
       },
       order: {
         score: 'DESC',
