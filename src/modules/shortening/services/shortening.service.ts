@@ -1,14 +1,16 @@
 import {
+  ConflictException,
   Inject,
   Injectable,
   NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
-import { ShortenRequestDto } from '../dtos/shorten-request.dto';
+import { RenameRequestDto, ShortenRequestDto } from '../dtos/shorten-request.dto';
 import { IShorteningStrategy } from '../strategies/encode.strategy';
 import { UrlRepository } from '../repository/url.repository';
 import { UrlMapper } from '../mappers/url.mapper';
 import { PaginationQueryDto } from '@common/dtos/pagination-request.dto';
+import { UrlEntity } from '@database/entities/url.entity';
 
 @Injectable()
 export class ShorteningService {
@@ -33,6 +35,33 @@ export class ShorteningService {
     }
 
     throw new RequestTimeoutException();
+  }
+
+  public async renameUrl(renameReqDto: RenameRequestDto) {
+    const existingUrl = await this.urlRepository.getByAlias(renameReqDto.alias);
+    if (!existingUrl) {
+      throw new NotFoundException();
+    }
+
+    const existingCustomAlias = await this.urlRepository.getByAlias(renameReqDto.customAlias);
+    if (existingCustomAlias) {
+      throw new ConflictException();
+    }
+
+    const urlEntityToSave = this.urlMapper.toEntity(
+      existingUrl.longUrl,
+      renameReqDto.customAlias,
+    );
+
+    const transactionManager = this.urlRepository.getEntityManager();
+    let savedUrlEntity: UrlEntity;
+    await transactionManager.transaction(async () => {
+      existingUrl.isInactive = true;
+      await this.urlRepository.saveUrl(existingUrl);
+      savedUrlEntity = await this.urlRepository.saveUrl(urlEntityToSave);
+    });
+
+    return this.urlMapper.toDto(savedUrlEntity);
   }
 
   private async generateAlias(longUrl: string) {

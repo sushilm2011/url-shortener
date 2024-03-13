@@ -17,6 +17,10 @@ export class UrlRepository {
       : this.urlRepo;
   }
 
+  public getEntityManager() {
+    return this.getRepo().manager;
+  }
+
   public async saveUrl(
     urlEntity: UrlEntity,
     transactionManager?: EntityManager,
@@ -57,6 +61,9 @@ export class UrlRepository {
 
   public async getUrls(queryDto: PaginationQueryDto) {
     return this.getRepo().findAndCount({
+      where: {
+        isInactive: false
+      },
       order: {
         score: 'DESC',
         updatedAt: 'DESC',

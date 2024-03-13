@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import helmet from 'helmet';
 import * as compression from 'compression';
 import { ConfigService } from '@nestjs/config';
-import { configSwagger } from './config/swagger.config';
+import { configSwagger } from '@config/swagger.config';
 import { Logger, RequestMethod, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters';
 import {
