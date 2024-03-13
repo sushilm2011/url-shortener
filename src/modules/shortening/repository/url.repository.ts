@@ -63,6 +63,7 @@ export class UrlRepository {
     return this.getRepo().findAndCount({
       where: {
         isInactive: false,
+        deleted: false
       },
       order: {
         visitCount: 'DESC',
