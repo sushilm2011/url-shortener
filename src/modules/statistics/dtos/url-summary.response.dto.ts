@@ -5,4 +5,5 @@ export class UrlSummaryResponseDto {
   clicks: number;
   recentAccess: Date;
   createdAt: Date;
+  requestLimit: number;
 }

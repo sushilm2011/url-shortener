@@ -39,6 +39,7 @@ export class StatisticsMapper {
       urlSummaryResponseDto.longUrl = url.longUrl;
       urlSummaryResponseDto.recentAccess = urlSummary?.recentAccess || null;
       urlSummaryResponseDto.shortAlias = url.alias;
+      urlSummaryResponseDto.requestLimit = url.requestLimit;
 
       return urlSummaryResponseDto;
     });

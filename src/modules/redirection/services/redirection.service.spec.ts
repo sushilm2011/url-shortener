@@ -21,7 +21,7 @@ describe('RedirectionService', () => {
       .useMocker((token) => {
         if (token === ShorteningService) {
           return {
-            getLongUrl: jest.fn(),
+            getUrl: jest.fn(),
           };
         } else if (token === getQueueToken(LINK_ACCESS_EVENTS_QUEUE)) {
           return {
@@ -47,15 +47,15 @@ describe('RedirectionService', () => {
   describe('getLongUrl', () => {
     afterEach(() => {
       jest.spyOn(linkAccessEventQueue, 'add').mockRestore();
-      jest.spyOn(shorteningService, 'getLongUrl').mockRestore();
+      jest.spyOn(shorteningService, 'getUrl').mockRestore();
     });
 
     it('should return longUrl successfully', async () => {
       const headers = { host: 'localhost' };
       const expectedLongUrl = 'https://www.google.com';
       jest
-        .spyOn(shorteningService, 'getLongUrl')
-        .mockResolvedValueOnce(expectedLongUrl);
+        .spyOn(shorteningService, 'getUrl')
+        .mockResolvedValueOnce({ longUrl: expectedLongUrl } as any);
       jest.spyOn(linkAccessEventQueue, 'add').mockResolvedValueOnce({} as any);
 
       const longUrl = await redirectionService.getLongUrl('google123', {
@@ -69,8 +69,8 @@ describe('RedirectionService', () => {
       const expectedLongUrl = 'https://www.google.com';
 
       jest
-        .spyOn(shorteningService, 'getLongUrl')
-        .mockResolvedValueOnce(expectedLongUrl);
+        .spyOn(shorteningService, 'getUrl')
+        .mockResolvedValueOnce({ longUrl: expectedLongUrl } as any);
       jest.spyOn(linkAccessEventQueue, 'add').mockResolvedValueOnce({} as any);
 
       const longUrl = await redirectionService.getLongUrl('google123', {
@@ -91,8 +91,8 @@ describe('RedirectionService', () => {
       const error = new Error('Queue error');
 
       jest
-        .spyOn(shorteningService, 'getLongUrl')
-        .mockResolvedValueOnce(expectedLongUrl);
+        .spyOn(shorteningService, 'getUrl')
+        .mockResolvedValueOnce({ longUrl: expectedLongUrl } as any);
       jest.spyOn(linkAccessEventQueue, 'add').mockRejectedValue(error);
       const errorLoggerSpy = jest.spyOn(Logger, 'error').mockImplementation();
 

@@ -81,18 +81,18 @@ describe('ShorteningService', () => {
     });
   });
 
-  describe('getLongUrl', () => {
+  describe('getUrl', () => {
     it('should retrieve the long URL for a valid alias', async () => {
       const urlEntity = new UrlEntity();
       urlEntity.longUrl = 'https://www.google.com';
       jest.spyOn(mockUrlRepository, 'getByAlias').mockResolvedValue(urlEntity);
-      const longUrl = await shorteningService.getLongUrl('abc');
-      expect(longUrl).toBe('https://www.google.com');
+      const responseUrlEntity = await shorteningService.getUrl('abc');
+      expect(responseUrlEntity.longUrl).toBe('https://www.google.com');
     });
 
     it('should throw NotFoundException if alias is not found', async () => {
       jest.spyOn(mockUrlRepository, 'getByAlias').mockResolvedValue(null);
-      await expect(shorteningService.getLongUrl('abc123')).rejects.toThrow(
+      await expect(shorteningService.getUrl('abc123')).rejects.toThrow(
         NotFoundException,
       );
     });

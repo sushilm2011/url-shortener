@@ -19,9 +19,9 @@ export class RedirectionService {
   ) {}
 
   public async getLongUrl(shortAlias: string, req: Request) {
-    const longUrl = await this.shorteningService.getLongUrl(shortAlias);
-    this.publishAccessEvent(longUrl, shortAlias, req.headers);
-    return longUrl;
+    const urlEntity = await this.shorteningService.getUrl(shortAlias);
+    this.publishAccessEvent(urlEntity.longUrl, shortAlias, req.headers);
+    return urlEntity.longUrl;
   }
 
   private async publishAccessEvent(

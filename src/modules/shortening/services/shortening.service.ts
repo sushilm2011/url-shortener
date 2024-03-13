@@ -86,13 +86,13 @@ export class ShorteningService {
     return alias;
   }
 
-  public async getLongUrl(shortAlias: string) {
+  public async getUrl(shortAlias: string) {
     const urlEntity = await this.urlRepository.getByAlias(shortAlias);
     if (!urlEntity) {
       throw new NotFoundException();
     }
 
-    return urlEntity.longUrl;
+    return urlEntity;
   }
 
   public async getUrls(queryDto: PaginationQueryDto) {
