@@ -28,7 +28,7 @@ describe('ShorteningService', () => {
             getByAlias: jest.fn(),
             saveUrl: jest.fn(),
             getUrls: jest.fn(),
-            incrScore: jest.fn(),
+            incrVisitCount: jest.fn(),
           };
         }
       })
@@ -114,12 +114,12 @@ describe('ShorteningService', () => {
     it('should call incrScore of url repository', async () => {
       const shortAlias = 'google';
 
-      jest.spyOn(mockUrlRepository, 'incrScore');
+      jest.spyOn(mockUrlRepository, 'incrVisitCount');
 
       await shorteningService.incrScore(shortAlias);
 
-      expect(mockUrlRepository.incrScore).toHaveBeenCalled();
-      expect(mockUrlRepository.incrScore).toHaveBeenCalledWith(shortAlias);
+      expect(mockUrlRepository.incrVisitCount).toHaveBeenCalled();
+      expect(mockUrlRepository.incrVisitCount).toHaveBeenCalledWith(shortAlias);
     });
   });
 });

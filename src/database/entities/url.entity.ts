@@ -13,12 +13,15 @@ export class UrlEntity extends BaseEntity {
   @Column({ name: 'alias', unique: true })
   alias: string;
 
-  @Column({ name: 'score', default: 0 })
-  score: number;
+  @Column({ name: 'visit_count', default: 0 })
+  visitCount: number;
 
   @Column({ name: 'is_inactive', default: false })
   isInactive: boolean;
 
   @Column({ name: 'deleted', default: false })
   deleted: boolean;
+
+  @Column({ name: 'request_limit', nullable: true })
+  requestLimit: number;
 }

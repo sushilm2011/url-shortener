@@ -140,7 +140,7 @@ describe('UrlRepository', () => {
     });
   });
 
-  describe('incrScore', () => {
+  describe('incrVisitCount', () => {
     beforeEach(async () => {
       const urlEntity = new UrlEntity();
       urlEntity.longUrl = 'https://www.google.com';
@@ -148,15 +148,15 @@ describe('UrlRepository', () => {
       await urlRepo.saveUrl(urlEntity);
     });
 
-    it('default score should be 0', async () => {
+    it('default visitCount should be 0', async () => {
       const url = await urlRepo.getByAlias('google');
-      expect(url.score).toBe(0);
+      expect(url.visitCount).toBe(0);
     });
 
-    it('should increment score successfully', async () => {
-      await urlRepo.incrScore('google');
+    it('should increment visitCount successfully', async () => {
+      await urlRepo.incrVisitCount('google');
       const url = await urlRepo.getByAlias('google');
-      expect(url.score).toBe(1);
+      expect(url.visitCount).toBe(1);
     });
   });
 });

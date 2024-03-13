@@ -65,7 +65,7 @@ export class UrlRepository {
         isInactive: false,
       },
       order: {
-        score: 'DESC',
+        visitCount: 'DESC',
         updatedAt: 'DESC',
       },
       skip: queryDto.offset,
@@ -73,7 +73,7 @@ export class UrlRepository {
     });
   }
 
-  public async incrScore(shortAlias: string) {
-    return this.getRepo().increment({ alias: shortAlias }, 'score', 1);
+  public async incrVisitCount(shortAlias: string) {
+    return this.getRepo().increment({ alias: shortAlias }, 'visitCount', 1);
   }
 }

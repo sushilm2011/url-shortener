@@ -30,7 +30,7 @@ export class ShorteningService {
     const alias = await this.generateAlias(shortenReqDto.longUrl);
     if (alias) {
       const urlEntityToSave = this.urlMapper.toEntity(
-        shortenReqDto.longUrl,
+        shortenReqDto,
         alias,
       );
       const savedUrlEntity = await this.urlRepository.saveUrl(urlEntityToSave);
@@ -54,7 +54,7 @@ export class ShorteningService {
     }
 
     const urlEntityToSave = this.urlMapper.toEntity(
-      existingUrl.longUrl,
+      { longUrl: existingUrl.longUrl, requestLimit: existingUrl.requestLimit },
       renameReqDto.customAlias,
     );
 
@@ -100,6 +100,6 @@ export class ShorteningService {
   }
 
   public async incrScore(shortAlias: string) {
-    return this.urlRepository.incrScore(shortAlias);
+    return this.urlRepository.incrVisitCount(shortAlias);
   }
 }
