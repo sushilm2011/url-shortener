@@ -1,3 +1,4 @@
+import { PaginationQueryDto } from '@common/dtos/pagination-request.dto';
 import { UrlEntity } from '@database/entities/url.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +11,7 @@ export class UrlRepository {
     private urlRepo: Repository<UrlEntity>,
   ) {}
 
-  private getRepo(transactionManager: EntityManager) {
+  private getRepo(transactionManager?: EntityManager) {
     return transactionManager
       ? transactionManager.getRepository(UrlEntity)
       : this.urlRepo;
@@ -53,5 +54,15 @@ export class UrlRepository {
     };
 
     return this.getRepo(transactionManager).findOne({ where: whereOptions });
+  }
+
+  public async getUrls(queryDto: PaginationQueryDto) {
+    return this.getRepo().findAndCount({
+      order: {
+        updatedAt: 'DESC',
+      },
+      skip: queryDto.offset,
+      take: queryDto.limit,
+    });
   }
 }

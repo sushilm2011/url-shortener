@@ -1,5 +1,8 @@
 import { LinkAccessEventDto } from '@common/dtos/link-access-event.dto';
 import { LinkAccessEventEntity } from '@database/entities/statistics.entity';
+import { UrlEntity } from '@database/entities/url.entity';
+import { IUrlSummary } from '../interfaces/url-summary.interface';
+import { UrlSummaryResponseDto } from '../dtos/url-summary.response.dto';
 
 export class StatisticsMapper {
   public toEntity(statsData: LinkAccessEventDto) {
@@ -21,5 +24,23 @@ export class StatisticsMapper {
     linkAccessEventEntity.userAgent = statsData.reqHeaders['user-agent'];
 
     return linkAccessEventEntity;
+  }
+
+  public toSummaryDto(urls: UrlEntity[], urlSummaries: IUrlSummary[]) {
+    return urls.map((url) => {
+      const urlSummary = urlSummaries.find(
+        (uS) => uS.longUrl === url.longUrl && uS.shortAlias === url.alias,
+      );
+
+      const urlSummaryResponseDto = new UrlSummaryResponseDto();
+      urlSummaryResponseDto.id = url.id;
+      urlSummaryResponseDto.createdAt = url.createdAt;
+      urlSummaryResponseDto.clicks = urlSummary?.clicks || 0;
+      urlSummaryResponseDto.longUrl = url.longUrl;
+      urlSummaryResponseDto.recentAccess = urlSummary?.recentAccess || null;
+      urlSummaryResponseDto.shortAlias = url.alias;
+
+      return urlSummaryResponseDto;
+    });
   }
 }

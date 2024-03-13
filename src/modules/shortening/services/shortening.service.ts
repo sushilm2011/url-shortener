@@ -8,6 +8,7 @@ import { ShortenRequestDto } from '../dtos/shorten-request.dto';
 import { IShorteningStrategy } from '../strategies/encode.strategy';
 import { UrlRepository } from '../repository/url.repository';
 import { UrlMapper } from '../mappers/url.mapper';
+import { PaginationQueryDto } from '@common/dtos/pagination-request.dto';
 
 @Injectable()
 export class ShorteningService {
@@ -58,5 +59,9 @@ export class ShorteningService {
     }
 
     return urlEntity.longUrl;
+  }
+
+  public async getUrls(queryDto: PaginationQueryDto) {
+    return this.urlRepository.getUrls(queryDto);
   }
 }
