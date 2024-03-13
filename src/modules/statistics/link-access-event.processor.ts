@@ -6,7 +6,7 @@ import { LinkAccessEventDto } from '@common/dtos/link-access-event.dto';
 import { Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
-import { StatisticsService } from './statistics.service';
+import { StatisticsService } from './services/statistics.service';
 
 @Processor(LINK_ACCESS_EVENTS_QUEUE)
 export class LinkAccessEventProcessor {

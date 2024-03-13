@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { StatisticsService } from './statistics.service';
+import { StatisticsService } from './services/statistics.service';
 import { LinkAccessEventProcessor } from './link-access-event.processor';
 import { QueueModule } from '@modules/queue/queue.module';
 import { StatisticsMapper } from './mappers/statistics.mapper';

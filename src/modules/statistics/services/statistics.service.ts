@@ -1,7 +1,7 @@
 import { LinkAccessEventDto } from '@common/dtos/link-access-event.dto';
 import { Injectable } from '@nestjs/common';
-import { StatisticsMapper } from './mappers/statistics.mapper';
-import { StatisticsRepository } from './repository/statistics.repository';
+import { StatisticsMapper } from '../mappers/statistics.mapper';
+import { StatisticsRepository } from '../repository/statistics.repository';
 import { PaginationQueryDto } from '@common/dtos/pagination-request.dto';
 import { ShorteningService } from '@modules/shortening/services/shortening.service';
 import { getPaginationResponse } from '@common/utils/pagination.util';
