@@ -27,6 +27,8 @@ describe('ShorteningService', () => {
           return {
             getByAlias: jest.fn(),
             saveUrl: jest.fn(),
+            getUrls: jest.fn(),
+            incrScore: jest.fn(),
           };
         }
       })
@@ -93,6 +95,31 @@ describe('ShorteningService', () => {
       await expect(shorteningService.getLongUrl('abc123')).rejects.toThrow(
         NotFoundException,
       );
+    });
+  });
+
+  describe('getUrls', () => {
+    it('should call getUrls of url repository', async () => {
+      const queryDto = { offset: 0, limit: 10 };
+
+      jest.spyOn(mockUrlRepository, 'getUrls').mockResolvedValueOnce([[], 0]);
+      await shorteningService.getUrls(queryDto);
+
+      expect(mockUrlRepository.getUrls).toHaveBeenCalled();
+      expect(mockUrlRepository.getUrls).toHaveBeenCalledWith(queryDto);
+    });
+  });
+
+  describe('incrScore', () => {
+    it('should call incrScore of url repository', async () => {
+      const shortAlias = 'google';
+
+      jest.spyOn(mockUrlRepository, 'incrScore');
+
+      await shorteningService.incrScore(shortAlias);
+
+      expect(mockUrlRepository.incrScore).toHaveBeenCalled();
+      expect(mockUrlRepository.incrScore).toHaveBeenCalledWith(shortAlias);
     });
   });
 });
