@@ -1,4 +1,4 @@
-import { ShorteningService } from 'src/modules/shortening/services/shortening.service';
+import { ShorteningService } from '@modules/shortening/services/shortening.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { IncomingHttpHeaders } from 'http';
 import { Request } from 'express';
