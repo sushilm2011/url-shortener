@@ -1,4 +1,7 @@
-import { LINK_ACCESS_EVENTS_QUEUE, LINK_ACCESS_EVENT_PREFIX } from '@common/constants/queue.constants';
+import {
+  LINK_ACCESS_EVENTS_QUEUE,
+  LINK_ACCESS_EVENT_PREFIX,
+} from '@common/constants/queue.constants';
 import { cacheConnection } from '@config/redis.config';
 import { BullModule, BullModuleOptions } from '@nestjs/bull';
 import { CacheModule } from '@nestjs/cache-manager';
@@ -9,8 +12,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [
     CacheModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: configService => cacheConnection(configService),
-      inject: [ConfigService]
+      useFactory: (configService) => cacheConnection(configService),
+      inject: [ConfigService],
     }),
     BullModule.registerQueueAsync({
       name: LINK_ACCESS_EVENTS_QUEUE,
@@ -24,9 +27,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         bullRootModuleOptions.prefix = LINK_ACCESS_EVENT_PREFIX;
         return bullRootModuleOptions;
       },
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
   ],
-  exports: [BullModule]
+  exports: [BullModule],
 })
 export class QueueModule {}

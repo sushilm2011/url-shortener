@@ -8,6 +8,7 @@ import { defaultConnection } from './config/typeorm.config';
 import { DataSource } from 'typeorm';
 import { RedirectionModule } from './modules/redirection/redirection.module';
 import { QueueModule } from './modules/queue/queue.module';
+import { StatisticsModule } from '@modules/statistics/statistics.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { QueueModule } from './modules/queue/queue.module';
     ShorteningModule,
     RedirectionModule,
     QueueModule,
+    StatisticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,4 @@
-import { IncomingHttpHeaders } from "http";
+import { IncomingHttpHeaders } from 'http';
 
 export class LinkAccessEventDto {
   longUrl: string;
@@ -6,7 +6,11 @@ export class LinkAccessEventDto {
   reqHeaders: IncomingHttpHeaders;
   timestamp: number;
 
-  constructor(longUrl: string, shortAlias: string, reqHeaders: IncomingHttpHeaders,) {
+  constructor(
+    longUrl: string,
+    shortAlias: string,
+    reqHeaders: IncomingHttpHeaders,
+  ) {
     this.longUrl = longUrl;
     this.shortAlias = shortAlias;
     this.reqHeaders = reqHeaders;
