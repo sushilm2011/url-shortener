@@ -2,6 +2,7 @@ import {
   ConflictException,
   Inject,
   Injectable,
+  Logger,
   NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { UrlRepository } from '../repository/url.repository';
 import { UrlMapper } from '../mappers/url.mapper';
 import { PaginationQueryDto } from '@common/dtos/pagination-request.dto';
 import { UrlEntity } from '@database/entities/url.entity';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 @Injectable()
 export class ShorteningService {
@@ -24,15 +26,14 @@ export class ShorteningService {
     private shorteningAttempts: number,
     private urlRepository: UrlRepository,
     private urlMapper: UrlMapper,
+    @Inject(CACHE_MANAGER)
+    private cache: Cache,
   ) {}
 
   public async shortenUrl(shortenReqDto: ShortenRequestDto) {
     const alias = await this.generateAlias(shortenReqDto.longUrl);
     if (alias) {
-      const urlEntityToSave = this.urlMapper.toEntity(
-        shortenReqDto,
-        alias,
-      );
+      const urlEntityToSave = this.urlMapper.toEntity(shortenReqDto, alias);
       const savedUrlEntity = await this.urlRepository.saveUrl(urlEntityToSave);
       return this.urlMapper.toDto(savedUrlEntity);
     }
@@ -41,6 +42,8 @@ export class ShorteningService {
   }
 
   public async renameUrl(renameReqDto: RenameRequestDto) {
+    await this.deleteCache(renameReqDto.alias);
+
     const existingUrl = await this.urlRepository.getByAlias(renameReqDto.alias);
     if (!existingUrl) {
       throw new NotFoundException();
@@ -87,11 +90,16 @@ export class ShorteningService {
   }
 
   public async getUrl(shortAlias: string) {
+    const cachedUrl = await this.getFromCache(shortAlias);
+    if (cachedUrl) {
+      return cachedUrl;
+    }
     const urlEntity = await this.urlRepository.getByAlias(shortAlias);
     if (!urlEntity) {
       throw new NotFoundException();
     }
-
+    // Update cache in background
+    this.setCache(shortAlias, urlEntity);
     return urlEntity;
   }
 
@@ -100,12 +108,39 @@ export class ShorteningService {
   }
 
   public async incrScore(shortAlias: string) {
-    return this.urlRepository.incrVisitCount(shortAlias);
+    await this.urlRepository.incrVisitCount(shortAlias);
+    const urlEntity = await this.urlRepository.getByAlias(shortAlias);
+    await this.setCache(shortAlias, urlEntity);
   }
 
   public async delete(shortAlias: string) {
     // Throws if not found
     const url = await this.getUrl(shortAlias);
+    await this.deleteCache(shortAlias);
     return this.urlRepository.softDelete(url.id);
+  }
+
+  public async getFromCache(alias: string): Promise<UrlEntity> {
+    try {
+      return this.cache.get(`url:${alias}`);
+    } catch (err) {
+      Logger.error(`Error while getting value from cache for ${alias}`, err);
+    }
+  }
+
+  public async setCache(alias: string, value: UrlEntity) {
+    try {
+      await this.cache.set(`url:${alias}`, value, 5 * 60 * 1000);
+    } catch (err) {
+      Logger.error(`Error while setting value to cache for ${alias}`, err);
+    }
+  }
+
+  public async deleteCache(alias: string) {
+    try {
+      return this.cache.del(`url:${alias}`);
+    } catch (err) {
+      Logger.error(`Error while deleting value from cache for ${alias}`, err);
+    }
   }
 }

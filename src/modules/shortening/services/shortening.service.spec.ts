@@ -4,6 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UrlMapper } from '../mappers/url.mapper';
 import { UrlRepository } from '../repository/url.repository';
 import { NotFoundException, RequestTimeoutException } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 const mockShorteningStrategy = {
   encode: jest.fn(),
@@ -30,6 +31,12 @@ describe('ShorteningService', () => {
             getUrls: jest.fn(),
             incrVisitCount: jest.fn(),
           };
+        } else if (token === CACHE_MANAGER) {
+          return {
+            get: jest.fn(),
+            set: jest.fn(),
+            del: jest.fn()
+          }
         }
       })
       .compile();

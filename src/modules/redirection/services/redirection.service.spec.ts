@@ -8,6 +8,7 @@ import {
   LINK_ACCESS_EVENT_TYPE,
 } from '@common/constants/queue.constants';
 import { Logger } from '@nestjs/common';
+import { CounterCacheService } from '@modules/counter-cache/counter-cache.service';
 
 describe('RedirectionService', () => {
   let redirectionService: RedirectionService;
@@ -26,6 +27,12 @@ describe('RedirectionService', () => {
         } else if (token === getQueueToken(LINK_ACCESS_EVENTS_QUEUE)) {
           return {
             add: jest.fn(),
+          };
+        } else if (token === CounterCacheService) {
+          return {
+            get: jest.fn(),
+            incr: jest.fn(),
+            set: jest.fn()
           };
         }
       })

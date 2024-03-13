@@ -9,6 +9,7 @@ import { DataSource } from 'typeorm';
 import { RedirectionModule } from './modules/redirection/redirection.module';
 import { QueueModule } from './modules/queue/queue.module';
 import { StatisticsModule } from '@modules/statistics/statistics.module';
+import { CounterCacheModule } from '@modules/counter-cache/counter-cache.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { StatisticsModule } from '@modules/statistics/statistics.module';
     RedirectionModule,
     QueueModule,
     StatisticsModule,
+    CounterCacheModule,
   ],
   controllers: [AppController],
   providers: [AppService],

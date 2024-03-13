@@ -63,7 +63,7 @@ export class UrlRepository {
     return this.getRepo().findAndCount({
       where: {
         isInactive: false,
-        deleted: false
+        deleted: false,
       },
       order: {
         visitCount: 'DESC',
@@ -80,7 +80,8 @@ export class UrlRepository {
 
   public async softDelete(id: string) {
     return this.getRepo().save({
-      id, deleted: true
+      id,
+      deleted: true,
     });
   }
 }

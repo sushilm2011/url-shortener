@@ -1,4 +1,10 @@
-import { IsNumber, IsOptional, IsString, IsUrl, MinLength } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+  MinLength,
+} from 'class-validator';
 
 export class ShortenRequestDto {
   @IsUrl()
@@ -29,7 +35,8 @@ export const ShortenRequestSchema = {
     },
     requestLimit: {
       type: 'number',
-      description: 'The request limit for the generated alias, as soon as the request limit is reached the url will stop working anymore.',
+      description:
+        'The request limit for the generated alias, as soon as the request limit is reached the url will stop working anymore.',
     },
   },
 };

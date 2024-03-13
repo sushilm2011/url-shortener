@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlEntity } from '@database/entities/url.entity';
 import { UrlRepository } from './repository/url.repository';
 import { UrlMapper } from './mappers/url.mapper';
+import { UrlCacheModule } from '@modules/cache/cache.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UrlEntity])],
+  imports: [UrlCacheModule, TypeOrmModule.forFeature([UrlEntity])],
   controllers: [ShorteningController],
   providers: [
     ShorteningService,
