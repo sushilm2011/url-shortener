@@ -1,5 +1,5 @@
 import { ShorteningService } from '@modules/shortening/services/shortening.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { IncomingHttpHeaders } from 'http';
 import { Request } from 'express';
 import {
@@ -20,6 +20,10 @@ export class RedirectionService {
 
   public async getLongUrl(shortAlias: string, req: Request) {
     const urlEntity = await this.shorteningService.getUrl(shortAlias);
+    if (urlEntity.requestLimit && urlEntity.visitCount >= urlEntity.requestLimit) {
+      throw HttpException.createBody('', 'This URL has reached its access limit.', HttpStatus.TOO_MANY_REQUESTS);
+    }
+
     this.publishAccessEvent(urlEntity.longUrl, shortAlias, req.headers);
     return urlEntity.longUrl;
   }
