@@ -1,4 +1,3 @@
-import { ShorteningService } from 'src/modules/shortening/services/shortening.service';
 import { Controller, Get, Param, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { RedirectionService } from './redirection.service';
@@ -11,10 +10,9 @@ export class RedirectionController {
   public async redirectToLongUrl(
     @Param('alias') shortAlias: string,
     @Res() res: Response,
-    @Req() req: Request
+    @Req() req: Request,
   ) {
-    req.headers
-    const longUrl = await this.redirectionService.getLongUrl(shortAlias);
+    const longUrl = await this.redirectionService.getLongUrl(shortAlias, req);
     return res.redirect(longUrl);
   }
 }
