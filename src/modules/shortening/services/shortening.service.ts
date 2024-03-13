@@ -102,4 +102,10 @@ export class ShorteningService {
   public async incrScore(shortAlias: string) {
     return this.urlRepository.incrVisitCount(shortAlias);
   }
+
+  public async delete(shortAlias: string) {
+    // Throws if not found
+    const url = await this.getUrl(shortAlias);
+    return this.urlRepository.softDelete(url.id);
+  }
 }

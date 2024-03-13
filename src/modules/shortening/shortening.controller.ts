@@ -1,5 +1,5 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import {
   RenameRequestDto,
   RenameRequestSchema,
@@ -27,5 +27,11 @@ export class ShorteningController {
   })
   public async updateUrl(@Body() renameReqDto: RenameRequestDto) {
     return this.shorteningService.renameUrl(renameReqDto);
+  }
+
+  @Delete(':/alias')
+  @ApiParam({ name: 'alias', example: 'z5FgTb' })
+  public async deleteAlias(@Param('alias') alias: string) {
+    return this.shorteningService.delete(alias);
   }
 }

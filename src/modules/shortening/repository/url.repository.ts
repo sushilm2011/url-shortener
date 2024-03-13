@@ -76,4 +76,10 @@ export class UrlRepository {
   public async incrVisitCount(shortAlias: string) {
     return this.getRepo().increment({ alias: shortAlias }, 'visitCount', 1);
   }
+
+  public async softDelete(id: string) {
+    return this.getRepo().save({
+      id, deleted: true
+    });
+  }
 }
