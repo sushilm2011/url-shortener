@@ -17,6 +17,7 @@ export class StatisticsService {
   public async saveLinkAccessStats(statsData: LinkAccessEventDto) {
     const linkAccessEventEntity = this.statisticsMapper.toEntity(statsData);
     await this.statisticsRepo.saveEvent(linkAccessEventEntity);
+    await this.shorteningService.incrScore(statsData.shortAlias);
   }
 
   public async getUrlSummary(queryDto: PaginationQueryDto) {

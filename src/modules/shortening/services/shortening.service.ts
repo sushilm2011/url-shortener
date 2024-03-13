@@ -64,4 +64,8 @@ export class ShorteningService {
   public async getUrls(queryDto: PaginationQueryDto) {
     return this.urlRepository.getUrls(queryDto);
   }
+
+  public async incrScore(shortAlias: string) {
+    return this.urlRepository.incrScore(shortAlias);
+  }
 }

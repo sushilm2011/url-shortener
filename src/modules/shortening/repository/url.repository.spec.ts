@@ -88,36 +88,4 @@ describe('UrlRepository', () => {
     expect(foundUrl.longUrl).toBe(urlEntity.longUrl);
     expect(foundUrl.alias).toBe(urlEntity.alias);
   });
-
-  it('Updates the custom alias successfully', async () => {
-    const urlEntity = new UrlEntity();
-    urlEntity.longUrl = 'https://www.google.com';
-    urlEntity.alias = 'google';
-    const savedUrl1 = await urlRepo.saveUrl(urlEntity);
-
-    const urlEntityToUpdate = new UrlEntity();
-    urlEntityToUpdate.id = savedUrl1.id;
-    urlEntityToUpdate.longUrl = 'https://www.google.com';
-    urlEntityToUpdate.alias = 'google';
-    urlEntityToUpdate.customAlias = 'custom';
-    const savedUrl2 = await urlRepo.saveUrl(urlEntityToUpdate);
-
-    expect(savedUrl2.id).toBe(savedUrl1.id);
-    expect(savedUrl1.customAlias).toBeNull();
-    expect(savedUrl2.customAlias).toBe(urlEntityToUpdate.customAlias);
-  });
-
-  it('Find by custom alias successfully', async () => {
-    const urlEntity = new UrlEntity();
-    urlEntity.longUrl = 'https://www.google.com';
-    urlEntity.alias = 'google';
-    urlEntity.customAlias = 'custom';
-    await urlRepo.saveUrl(urlEntity);
-
-    const foundUrl = await urlRepo.getByAlias(urlEntity.customAlias, true);
-
-    expect(foundUrl).toBeDefined();
-    expect(foundUrl.customAlias).not.toBeNull();
-    expect(foundUrl.customAlias).toBe(urlEntity.customAlias);
-  });
 });

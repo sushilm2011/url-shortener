@@ -31,15 +31,14 @@ export class UrlRepository {
 
   public async getByAlias(
     alias: string,
-    includeCustomAlias?: boolean,
+    includeInactive?: boolean,
     transactionManager?: EntityManager,
   ) {
     const whereOptions: FindOptionsWhere<UrlEntity> = {};
+    whereOptions.alias = alias;
 
-    if (includeCustomAlias) {
-      whereOptions.customAlias = alias;
-    } else {
-      whereOptions.alias = alias;
+    if (!includeInactive) {
+      whereOptions.isInactive = false;
     }
 
     return this.getRepo(transactionManager).findOne({ where: whereOptions });
@@ -59,10 +58,15 @@ export class UrlRepository {
   public async getUrls(queryDto: PaginationQueryDto) {
     return this.getRepo().findAndCount({
       order: {
+        score: 'DESC',
         updatedAt: 'DESC',
       },
       skip: queryDto.offset,
       take: queryDto.limit,
     });
+  }
+
+  public async incrScore(shortAlias: string) {
+    return this.getRepo().increment({ alias: shortAlias }, 'score', 1);
   }
 }

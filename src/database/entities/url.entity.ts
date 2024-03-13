@@ -13,6 +13,12 @@ export class UrlEntity extends BaseEntity {
   @Column({ name: 'alias', unique: true })
   alias: string;
 
-  @Column({ name: 'custom_alias', nullable: true, unique: true })
-  customAlias: string;
+  @Column({ name: 'score', default: 0 })
+  score: number;
+
+  @Column({ name: 'is_inactive', default: false })
+  isInactive: boolean;
+
+  @Column({ name: 'deleted', default: false })
+  deleted: boolean;
 }
