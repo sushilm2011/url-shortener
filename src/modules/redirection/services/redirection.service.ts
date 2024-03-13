@@ -21,7 +21,7 @@ export class RedirectionService {
   ) {}
 
   public async getLongUrl(shortAlias: string, req: Request) {
-    const urlEntity = await this.shorteningService.getUrl(shortAlias);
+    const urlEntity = await this.shorteningService.getUrl(shortAlias, true);
     const visitCount = await this.counterService.get(`url-visit:${shortAlias}`);
     const urlVisitCount = visitCount
       ? Number(visitCount)

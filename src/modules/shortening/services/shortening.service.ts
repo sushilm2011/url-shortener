@@ -89,12 +89,12 @@ export class ShorteningService {
     return alias;
   }
 
-  public async getUrl(shortAlias: string) {
+  public async getUrl(shortAlias: string, includeInactive?: boolean) {
     const cachedUrl = await this.getFromCache(shortAlias);
     if (cachedUrl) {
       return cachedUrl;
     }
-    const urlEntity = await this.urlRepository.getByAlias(shortAlias);
+    const urlEntity = await this.urlRepository.getByAlias(shortAlias, includeInactive);
     if (!urlEntity) {
       throw new NotFoundException();
     }
