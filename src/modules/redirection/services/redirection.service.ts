@@ -50,7 +50,7 @@ export class RedirectionService {
     } else {
       await this.counterService.set(
         `url-visit:${shortAlias}`,
-        `urlEntity.visitCount`,
+        `${urlEntity.visitCount + 1}`,
         60,
       );
     }
