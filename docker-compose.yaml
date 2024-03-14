@@ -12,8 +12,10 @@ services:
       - "5433:5432"
     volumes:
       - us_postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - postgres
+      - url-shortener
 
   # pgAdmin web interface for managing Postgres
   pgadmin:
@@ -30,6 +32,7 @@ services:
       - us_pgadminlibdata:/var/lib/pgadmin
     networks:
       - postgres
+      - url-shortener
 
   # Redis service for caching
   redis:
@@ -38,6 +41,46 @@ services:
       - "6380:6379"
     volumes:
       - us_redis_data:/data
+    networks:
+      - url-shortener
+
+  backend:
+    container_name: url_shortener_app
+    image: url_shortener_app
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - 3080:3080
+    networks:
+      - url-shortener
+    environment:
+      - TYPEORM_HOST=postgres
+      - TYPEORM_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - .:/home/node/app/
+      - /home/node/app/node_modules
+    depends_on:
+      - postgres
+      - redis
+
+  migration:
+    build:
+      context: .
+    command:
+      [ "npm", "run", "migrate" ]
+    links:
+      - postgres
+    depends_on:
+      - postgres
+      - backend
+    networks:
+      - url-shortener
+    environment:
+      - TYPEORM_HOST=postgres
+      - TYPEORM_PORT=5432
 
 # Volumes to persist data
 volumes:
@@ -52,4 +95,6 @@ volumes:
 
 networks:
   postgres:
+    driver: bridge
+  url-shortener:
     driver: bridge
