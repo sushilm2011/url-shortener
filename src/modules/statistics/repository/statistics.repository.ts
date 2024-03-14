@@ -37,4 +37,17 @@ export class StatisticsRepository {
 
     return qb.getRawMany();
   }
+
+  public async getAliasEvents(alias: string) {
+    return this.getRepo().find({
+      where: {
+        alias: alias
+      },
+      order: {
+        createdAt: 'DESC'
+      },
+      skip: 0,
+      take: 25
+    })
+  }
 }

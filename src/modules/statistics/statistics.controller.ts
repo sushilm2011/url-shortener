@@ -1,5 +1,5 @@
 import { PaginationQueryDto } from '@common/dtos/pagination-request.dto';
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { StatisticsService } from './services/statistics.service';
 
@@ -11,5 +11,12 @@ export class StatisticsController {
   @Get('/url')
   public async getStats(@Query() queryDto: PaginationQueryDto) {
     return this.statisticsService.getUrlSummary(queryDto);
+  }
+
+  @Get('/url/:alias')
+  public async getStatsUrl(
+    @Param('alias') alias: string
+  ) {
+    return this.statisticsService.getAliasStats(alias);
   }
 }

@@ -30,4 +30,8 @@ export class StatisticsService {
     );
     return getPaginationResponse(queryDto, mappedSummary, total);
   }
+
+  public async getAliasStats(shortAlias: string) {
+    return this.statisticsRepo.getAliasEvents(shortAlias);
+  }
 }
